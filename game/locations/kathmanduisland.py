@@ -75,7 +75,7 @@ class Cove(location.SubLocation):
         self.events.append(Storm())
 
     def enter(self):
-        announce("You arrive at the cove. If you type solve there's a riddle for you upon solving which you get food and medicine.")
+        announce("You arrive at the cove. If you type solve there's a riddle for you upon solving which you get food.")
 
     def solve_riddle(self):
         print("In the heart of the cove, a riddle lies,")
@@ -87,11 +87,11 @@ class Cove(location.SubLocation):
         while answer != "clock":
             print("Incorrect. Try again.")
             answer = input("> ").lower()
+        self.food
 
     print("Well done! You've solved the jungle's riddle.")
     print("Your reward is a step closer to your goal.")
 
-    # I wanna reward them a magic compass which helps in navigation
 
 
     def process_verb(self, verb, cmd_list, nouns):
@@ -134,6 +134,7 @@ class Jungle(location.SubLocation):
             for i in config.the_player.get_pirates():
                 i.health = 100
                 print(i)
+            print("Now your wounds are healed.")
                     
 
 class Graveyard(location.SubLocation):
@@ -158,8 +159,7 @@ class Graveyard(location.SubLocation):
     def process_verb(self, verb, cmd_list, nouns):
         if verb == "west":
             announce("You reach goldmine.")
-            config.the_player.next_loc = config.the_player.goldmine
-            config.the_player.visiting = False
+            config.the_player.next_loc = self.main_location.locations["goldmine"]
         elif verb == "east":
             config.the_player.next_loc = self.main_location.locations["graveyard"]
         elif verb == "north" or verb == "south":
@@ -188,6 +188,13 @@ class Goldmine(location.SubLocation):
     def enter(self):
         announce(" You arrived at the goldmine. You have to solve a riddle to get the treasure.")
 
+        
+    def treasure_chest(self):
+        for pirate in config.the_player.get_pirates():
+            treasure_chest = items.TreasureChest()
+            pirate.items.append(treasure_chest)
+            announce(f"{pirate.name} obtained a {treasure_chest.name}!")
+
     def solve_riddle(self):
         print(self.riddle_question)
 
@@ -198,6 +205,7 @@ class Goldmine(location.SubLocation):
             answer = input("> ")
 
         print("Well done! You've solved the goldmine's riddle.")
+        self.treasure_chest
         print("The treasure is now yours, a reward for your wit and will.")
         # Add code to reward the player with treasure or other items
 
@@ -212,6 +220,7 @@ class Goldmine(location.SubLocation):
             announce("You walk all the way around the cave on the beach. It's not very interesting.")
         elif verb == "solve":
             self.solve_riddle()
+
         
 
 class KMonster(combat.Monster):

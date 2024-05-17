@@ -85,3 +85,17 @@ class Flintlock(Item):
         self.skill = "guns"
         self.verb = "shoot"
         self.verb2 = "shoots"
+
+class TreasureChest(Item):
+    def __init__(self):
+        super().__init__("Golden Treasure Chest", "An amazing  treasure chest filled with ancient riches.")
+        self.value = 1000  
+        self.weight = 10
+
+class Food(Item):
+    def __init__(self, name, value, nutrition):
+        super().__init__(name, value)
+        self.nutrition = nutrition  # Nutritional value of the food
+
+    def __str__(self):
+        return f"{self.name} (Food, Nutrition: {self.nutrition})"
